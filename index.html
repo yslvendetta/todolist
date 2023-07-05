@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- Login form Creation -->
+    <div class="background"></div>
+    <div class="container">
+        <div class="item">
+            <h2 class="logo">TO-DO LIST</h2>
+            <div class="text-item">
+                <p>A simple To-Do list app
+                    that makes Scheduling 
+                    of tasks easier and better.
+                    As it implements the 
+                    Eisenhower prioritization ,
+                    Matrix.</p>
+            </div>
+        </div>
+        <div class="login-section">
+            <div class="form-box login">
+                <form id="login-form" >
+                    <h2>Sign In</h2>
+                    <div class="input-box">
+
+                        <input type="email" id="login-email" required>
+                        <label for="login-email">Email</label>
+                    </div>
+                    <div class="input-box">
+                        
+                        <input type="password" id="login-password" required>
+                        <label for="">Password</label>
+                    </div>
+                    <p class="error-message"></p>
+                    <button type="submit" class="btn">Login In</button>
+                    <div class="create-account">
+                        <p>Don't have an Account? <a href="#" id="register-link">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+            <div class="form-box register">
+                <form id="signup-form">
+                    <h2>Sign Up</h2>
+                    <div class="input-box">
+                        <input id = "username" type="text" required>
+                        <label for="username">Username</label>
+                    </div>
+                    <div class="input-box">
+                        <input id="signup-email" type="email" required>
+                        <label for="signup-email">Email</label>
+                    </div>
+                    <div class="input-box">
+                        <input id="signup-password" type="password" required>
+                        <label for="signup-password">Password</label>
+                    </div>
+                    <div class="input-box">
+                        <input id="confirm-password" type="password" required>
+                        <label for="confirm-password">Confirm Password</label>
+                    </div>
+                    <button type="submit" class="btn-register">Register</button>
+                    <div class="create-account">
+                        <p>Already have an account? <a href="#" id="login-link">Login</a></p>
+                    </div>
+        </div>
+    </div>
+
+    
+
+
+    <script src="index.js"></script>
+<!-- js -->
+
+<script src="https://kit.fontawesome.com/5fd474e55b.js" crossorigin="anonymous"></script>
+
+  
+
+</body>
+</html>
