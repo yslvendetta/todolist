@@ -1,6 +1,5 @@
 // Get the input and button elements
 const taskInput = document.querySelector(".task-input input");
-const prioritySelect = document.getElementById("priority-select");
 const addTaskBtn = document.getElementById('add-task-btn');
 const clearAllBtn = document.querySelector('.clear-btn');
 const filters = document.querySelectorAll('.filters span');
@@ -14,7 +13,6 @@ const q4Tasks = document.getElementById('q4-tasks');
 // Initialize todos from localStorage or create empty array
 let todos = JSON.parse(localStorage.getItem("todo-list")) || [];
 
-//```javascript
 // Add task event listener
 addTaskBtn.addEventListener('click', addTask);
 
@@ -39,14 +37,14 @@ function createTaskElement(todo) {
   taskElement.classList.add('task');
   taskElement.innerHTML = `
     <label for="${todo.id}">
-    <input type="checkbox" id="checkbox-${todo.id}" ${todo.completed ? 'checked' : ''} onchange="updateStatus('${todo.id}')">
+      <input type="checkbox" id="${todo.id}" ${todo.completed ? 'checked' : ''} onchange="updateStatus('${todo.id}')">
       <p class="${todo.completed ? 'completed' : ''}">${todo.name}</p>
     </label>
     <div class="settings">
       <i class="fas fa-ellipsis-h" onclick="showMenu(this)"></i>
       <ul class="task-menu">
-          <li onclick="editTask('${todo.id}')"><i class="far fa-edit"></i>Edit</li>
-          <li onclick="deleteTask('${todo.id}')"><i class="far fa-trash-alt"></i>Delete</li>
+        <li onclick="editTask('${todo.id}', '${todo.name}')"><i class="far fa-edit"></i>Edit</li>
+        <li onclick="deleteTask('${todo.id}')"><i class="far fa-trash-alt"></i>Delete</li>
       </ul>
     </div>
   `;
@@ -56,21 +54,38 @@ function createTaskElement(todo) {
 // Add a new task
 function addTask() {
   const taskText = taskInput.value.trim();
-  const priority = prioritySelect.value;
   if (taskText !== '') {
     const todo = {
       id: generateUniqueId(),
       name: taskText,
       completed: false,
-      quadrant: priority
+      quadrant: ''
     };
+    const quadrant = determineQuadrant(todo);
+    todo.quadrant = quadrant.id;
     todos.push(todo);
-    const quadrant = document.getElementById(priority + '-tasks');
     const taskElement = createTaskElement(todo);
     quadrant.appendChild(taskElement);
     saveTodosToLocalStorage();
     taskInput.value = '';
   }
+}
+
+// Determine the quadrant based on the task's priority
+function determineQuadrant(todo) {
+  const isUrgent = confirm('Is the task urgent?');
+  const isImportant = confirm('Is the task important?');
+  let quadrant;
+  if (isUrgent && isImportant) {
+    quadrant = q1Tasks;
+  } else if (isImportant) {
+    quadrant = q2Tasks;
+  } else if (isUrgent) {
+    quadrant = q3Tasks;
+  } else {
+    quadrant = q4Tasks;
+  }
+  return quadrant;
 }
 
 // Generate a unique ID for each task
@@ -81,17 +96,8 @@ function generateUniqueId() {
 // Update task status (completed/pending)
 function updateStatus(todoId) {
   const todo = todos.find(todo => todo.id === todoId);
-  if (todo) {
-    const checkbox = document.getElementById(`checkbox-${todo.id}`);
-    if (checkbox) {
-      todo.completed = checkbox.checked;
-      saveTodosToLocalStorage();
-    } else {
-      console.error('Checkbox element not found');
-    }
-  } else {
-    console.error('Todo not found');
-  }
+  todo.completed = !todo.completed;
+  saveTodosToLocalStorage();
 }
 
 // taskmenu
@@ -100,46 +106,26 @@ function showMenu(selectedTask) {
   taskMenu.classList.toggle("show");
 }
 
-
 // Edit a task
-function editTask(todoId) {
+function editTask(todoId, taskName) {
   const todo = todos.find(todo => todo.id === todoId);
-  const taskInput = document.querySelector(".task-input input");
-  
-  // Set the task input value to the current task name
-  taskInput.value = todo.name;
-
-  // Add an event listener to the Add button to update the task
-  addTaskBtn.removeEventListener('click', addTask);
-  addTaskBtn.addEventListener('click', function() {
-    const newTaskName = taskInput.value.trim();
-    if (newTaskName !== '') {
-      todo.name = newTaskName;
-      saveTodosToLocalStorage();
-      showTasks(getActiveFilter());
-      taskInput.value = '';
-      
-      // Restore the original addTask event listener
-      addTaskBtn.removeEventListener('click', arguments.callee);
-      addTaskBtn.addEventListener('click', addTask);
-    }
-  });
+  const newTaskName = prompt('Edit task:', taskName);
+  if (newTaskName !== null) {
+    todo.name = newTaskName.trim();
+    saveTodosToLocalStorage();
+    showTasks(getActiveFilter());
+  }
 }
-
-
-
 
 // Delete a task
 function deleteTask(todoId) {
   const todoIndex = todos.findIndex(todo => todo.id === todoId);
-
   if (todoIndex !== -1) {
     todos.splice(todoIndex, 1);
     saveTodosToLocalStorage();
     showTasks(getActiveFilter());
   }
 }
-
 
 // Clear all tasks
 function clearAllTasks() {
@@ -168,8 +154,8 @@ function showTasks(filter) {
   });
 
   todos.forEach(todo => {
-     const quadrant = document.getElementById(todo.quadrant + '-tasks');
     if (filter === 'all' || (filter === 'completed' && todo.completed) || (filter === 'pending' && !todo.completed)) {
+      const quadrant = document.getElementById(todo.quadrant);
       const taskElement = createTaskElement(todo);
       quadrant.appendChild(taskElement);
     }

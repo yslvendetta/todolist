@@ -7,8 +7,8 @@
   <title>Eisenhower Matrix Todo List</title>
   <link rel="stylesheet" href="task.css">
 
-   <!-- iconscout link for icons -->
- <script src="https://kit.fontawesome.com/5fd474e55b.js" crossorigin="anonymous"></script>
+  <!-- iconscout link for icons -->
+  <script src="https://kit.fontawesome.com/5fd474e55b.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="container">
@@ -17,15 +17,22 @@
     <div class="task-input">
       <input type="text" id="task-input" placeholder="Add a new task">
       <button id="add-task-btn">Add</button>
+      <select id="priority-select">
+        <option value="q1">Urgent & Important</option>
+        <option value="q2">Important, Not Urgent</option>
+        <option value="q3">Urgent, Not Important</option>
+        <option value="q4">Not Urgent & Not Important</option>
+      </select>
+      
     </div>
     <div class="controls">
       <div class="filters">
-          <span id="all">All</span>
-          <span id="pending">Pending</span>
-          <span id="completed">Completed</span>
+        <span id="all">All</span>
+        <span id="pending">Pending</span>
+        <span id="completed">Completed</span>
       </div>
       <button class="clear-btn">Clear All</button>
-  </div>
+    </div>
   
     <div class="matrix">
       <div class="quadrant" id="q1">
@@ -50,4 +57,3 @@
   <script src="task.js"></script>
 </body>
 </html>
-
