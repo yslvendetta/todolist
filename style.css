@@ -192,11 +192,11 @@ body{
     }
     .container .item{
         top: 0;
-        margin-left: 10px;
+        margin-left: 40px;
     }
     .container .login-section{
-        margin-top: 100px;
-        margin-right: 170px;
+        margin-top: 110px;
+        margin-right: 140px;
     }
 
     .item .logo{
